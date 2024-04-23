@@ -656,7 +656,7 @@ void UMillicastPublisherComponent::CaptureAndAddTracks()
 			{
 				Encoding.max_bitrate_bps = *MaximumBitrate;
 			}
-			Encoding.max_framerate = 60;
+			Encoding.max_framerate = MaximumBitrate.IsSet() ? *MaximumFramerate : 60;
 			Encoding.network_priority = webrtc::Priority::kHigh;
 			init.send_encodings.push_back(Encoding);
 		}
@@ -728,6 +728,11 @@ void UMillicastPublisherComponent::UpdateBitrateSettings()
 			UE_LOG(LogMillicastPublisher, Error, TEXT("Could not set maximum bitrate: %s"), *FString(Error.message()));
 		}
 	}
+}
+
+void UMillicastPublisherComponent::SetMaximumFramerate(int Fps)
+{
+	MaximumFramerate = Fps;
 }
 
 void UMillicastPublisherComponent::SetMinimumBitrate(int Bps)

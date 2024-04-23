@@ -124,6 +124,13 @@ public:
 	bool IsPublishing() const;
 
 	/**
+	* Sets the maximum framerate for the peerconnection
+	* Have to be called before Publish
+	*/
+	UFUNCTION(BlueprintCallable, Category = "MillicastPublisher", META = (DisplayName = "SetMaximumFramerate"))
+	void SetMaximumFramerate(int Fps);
+
+	/**
 	* Set the minimum bitrate for the peerconnection
 	* Have to be called before Publish
 	*/
@@ -283,6 +290,7 @@ private:
 	/** Publisher */
 	TAtomic<EMillicastPublisherState> State = EMillicastPublisherState::Disconnected;
 	bool RtcStatsEnabled = false;
+	TOptional<int> MaximumFramerate;
 	TOptional<int> MinimumBitrate; // in bps
 	TOptional<int> MaximumBitrate; // in bps
 	TOptional<int> StartingBitrate; // in bps
