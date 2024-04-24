@@ -53,7 +53,7 @@ namespace UnrealBuildTool.Rules
 					"OpenSSL",
 					"RenderCore",
 					"TimeManagement"
-				});
+                });
 
 			PrivateDependencyModuleNames.AddRange(
 				new string[] {
@@ -93,7 +93,16 @@ namespace UnrealBuildTool.Rules
 				AddEngineThirdPartyPrivateStaticDependencies(Target, "NVAftermath");
 			}
 
-			if (ReadOnlyBuildVersion.Current.MajorVersion >= 5)
+            if (Target.Platform.ToString() == "Win64" || bUseMillicastWebRTC)
+            {
+                PublicDefinitions.Add("WITH_SCREENCAPTURER=1");
+            }
+            else
+            {
+                PublicDefinitions.Add("WITH_SCREENCAPTURER=0");
+            }
+
+            if (ReadOnlyBuildVersion.Current.MajorVersion >= 5)
 			{
 				PrivateDependencyModuleNames.AddRange(new string[] {
 					"RHICore"
