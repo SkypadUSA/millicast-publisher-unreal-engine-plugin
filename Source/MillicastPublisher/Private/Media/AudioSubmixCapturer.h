@@ -3,7 +3,18 @@
 #pragma once
 
 #include "AudioCapturerBase.h"
-#include "Sound/SoundSubmix.h"
+#include "CoreTypes.h"
+#include "ISubmixBufferListener.h"
+#include "Misc/Optional.h"
+
+class FAudioDevice;
+class USoundSubmix;
+class UWorld;
+
+namespace Audio
+{
+	using FDeviceId = uint32;
+}
 
 namespace Millicast::Publisher
 {
