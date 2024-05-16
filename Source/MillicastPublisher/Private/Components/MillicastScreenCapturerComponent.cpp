@@ -15,7 +15,7 @@ UMillicastScreenCapturerComponent::UMillicastScreenCapturerComponent(const FObje
 	bWantsInitializeComponent = true;
 }
 
-#if !PLATFORM_ANDROID && !PLATFORM_IOS
+#if WITH_SCREENCAPTURER
 void UMillicastScreenCapturerComponent::OnCaptureResult(webrtc::DesktopCapturer::Result result, 
 	std::unique_ptr<webrtc::DesktopFrame> frame)
 {	
@@ -87,7 +87,7 @@ void UMillicastScreenCapturerComponent::TickComponent(float DeltaTime, ELevelTic
 
 TArray<FMillicastScreenCapturerInfo> UMillicastScreenCapturerComponent::GetMillicastScreenCapturerInfo()
 {
-#if !PLATFORM_ANDROID && !PLATFORM_IOS
+#if WITH_SCREENCAPTURER
 	TArray<FMillicastScreenCapturerInfo> Info;
 	webrtc::DesktopCaptureOptions options = webrtc::DesktopCaptureOptions::CreateDefault();
 
@@ -137,7 +137,7 @@ TArray<FMillicastScreenCapturerInfo> UMillicastScreenCapturerComponent::GetMilli
 
 void UMillicastScreenCapturerComponent::ChangeMillicastScreenCapturer(FMillicastScreenCapturerInfo Info)
 {
-#if !PLATFORM_ANDROID && !PLATFORM_IOS
+#if WITH_SCREENCAPTURER
 	webrtc::DesktopCaptureOptions options = webrtc::DesktopCaptureOptions::CreateDefault();
 
 	std::unique_ptr<webrtc::DesktopCapturer> NewCapturer = nullptr;
