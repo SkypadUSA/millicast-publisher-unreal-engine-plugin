@@ -187,6 +187,13 @@ public:
 	void EnableStats(bool Enable);
 
 	/**
+	 * Enable recording
+	 * Must be called before publishing to have effect
+	 */
+	UFUNCTION(BlueprintCallable, Category = "MillicastPublisher", META = (DisplayName = "EnableRecording"))
+	void EnableRecording(bool Enable);
+
+	/**
 	* Enable the frame transformer
 	* Must be called before publishing to have effect
 	*/

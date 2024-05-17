@@ -799,6 +799,11 @@ void UMillicastPublisherComponent::EnableStats(bool Enable)
 	}
 }
 
+void UMillicastPublisherComponent::EnableRecording(bool Enable)
+{
+	Record = Enable;
+}
+
 void UMillicastPublisherComponent::EnableFrameTransformer(bool Enable)
 {
 	bUseFrameTransformer = Enable;
