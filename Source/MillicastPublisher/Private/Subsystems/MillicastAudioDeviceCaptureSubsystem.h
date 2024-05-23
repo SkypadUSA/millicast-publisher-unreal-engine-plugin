@@ -25,7 +25,7 @@ struct FAudioCaptureInfo
 	FString DeviceId;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "MillicastPublisher")
-	EAudioCaptureDirection Direction;
+	EAudioCaptureDirection Direction = EAudioCaptureDirection::Input;
 
 	FAudioCaptureInfo() noexcept = default;
 
