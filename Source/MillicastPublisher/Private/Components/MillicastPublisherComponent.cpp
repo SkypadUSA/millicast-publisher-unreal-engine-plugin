@@ -238,7 +238,7 @@ bool UMillicastPublisherComponent::Publish()
 	// Fill HTTP request headers
 	PostHttpRequest.SetHeader("Content-Type", "application/json");
 	PostHttpRequest.SetHeader("Authorization", "Bearer " + MillicastMediaSource->PublishingToken);
-
+	
 	// Creates JSON data fro the request
 	auto RequestData = MakeShared<FJsonObject>();
 	RequestData->SetStringField("streamName", MillicastMediaSource->StreamName);
@@ -449,7 +449,7 @@ bool UMillicastPublisherComponent::PublishToMillicast()
 		DataJson->SetStringField("sdp", ToString(sdp));
 		DataJson->SetStringField("codec", ToString(SelectedVideoCodec));
 		DataJson->SetArrayField("events", eventsJson);
-
+		DataJson->SetBoolField("record", Record);
 		// If multisource feature
 		if (!MillicastMediaSource->SourceId.IsEmpty())
 		{
@@ -656,7 +656,7 @@ void UMillicastPublisherComponent::CaptureAndAddTracks()
 			{
 				Encoding.max_bitrate_bps = *MaximumBitrate;
 			}
-			Encoding.max_framerate = 60;
+			Encoding.max_framerate = MaximumBitrate.IsSet() ? *MaximumFramerate : 60;
 			Encoding.network_priority = webrtc::Priority::kHigh;
 			init.send_encodings.push_back(Encoding);
 		}
@@ -730,6 +730,11 @@ void UMillicastPublisherComponent::UpdateBitrateSettings()
 	}
 }
 
+void UMillicastPublisherComponent::SetMaximumFramerate(int Fps)
+{
+	MaximumFramerate = Fps;
+}
+
 void UMillicastPublisherComponent::SetMinimumBitrate(int Bps)
 {
 	MinimumBitrate = Bps;
@@ -775,6 +780,16 @@ bool UMillicastPublisherComponent::SetAudioCodec(EMillicastAudioCodecs InAudioCo
 	return true;
 }
 
+void UMillicastPublisherComponent::EnableSimulcast(bool InSimulcast)
+{
+	Simulcast = InSimulcast;
+}
+
+void UMillicastPublisherComponent::EnableAutomute(bool InAutomute)
+{
+	Automute = InAutomute;
+}
+
 void UMillicastPublisherComponent::EnableStats(bool Enable)
 {
 	RtcStatsEnabled = Enable;
@@ -782,6 +797,11 @@ void UMillicastPublisherComponent::EnableStats(bool Enable)
 	{
 		PeerConnection->EnableStats(Enable);
 	}
+}
+
+void UMillicastPublisherComponent::EnableRecording(bool Enable)
+{
+	Record = Enable;
 }
 
 void UMillicastPublisherComponent::EnableFrameTransformer(bool Enable)

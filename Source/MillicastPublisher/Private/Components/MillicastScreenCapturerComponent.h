@@ -45,10 +45,10 @@ public:
 	int32 CaptureFrameRate = 30; // Capture every 30ms
 
 public:
-#if !PLATFORM_ANDROID && !PLATFORM_IOS
+#if WITH_SCREENCAPTURER
 	void OnCaptureResult(webrtc::DesktopCapturer::Result result,
 		std::unique_ptr<webrtc::DesktopFrame> frame) override;
-
+	
 	void InitializeComponent() override;
 	void UninitializeComponent() override;
 	void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

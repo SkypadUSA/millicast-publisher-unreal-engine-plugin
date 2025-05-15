@@ -4,10 +4,8 @@
 
 #include "MillicastPublisherSource.h"
 #include "RtcCodecsConstants.h"
-
-#include "Components/ActorComponent.h"
 // #include "WebRTC/PeerConnection.h"
-
+#include "Components/ActorComponent.h"
 #include "MillicastPublisherComponent.generated.h"
 
 class FJsonValue;
@@ -84,9 +82,12 @@ private:
 	/** Whether to enable the frame transformer.
 	* If enabled, an event will be fired at each frame so you can append metadata to the frame.
 	*/
-	UPROPERTY(EditDefaultsOnly, Category = "Properties",
-		META = (DisplayName = "Add Frame Metadata", AllowPrivateAccess = true))
+	UPROPERTY(EditDefaultsOnly, Category = "Properties", META = (DisplayName = "Add Frame Metadata", AllowPrivateAccess = true))
 	bool bUseFrameTransformer = false;
+
+	/** Whether to record the stream or not */
+	UPROPERTY(EditDefaultsOnly, Category = "Properties", META = (DisplayName = "Record Stream"))
+	bool Record = false;
 
 public:
 	/**
@@ -121,6 +122,13 @@ public:
 	*/
 	UFUNCTION(BlueprintCallable, Category = "MillicastPublisher", META = (DisplayName = "IsPublishing"))
 	bool IsPublishing() const;
+
+	/**
+	* Sets the maximum framerate for the peerconnection
+	* Have to be called before Publish
+	*/
+	UFUNCTION(BlueprintCallable, Category = "MillicastPublisher", META = (DisplayName = "SetMaximumFramerate"))
+	void SetMaximumFramerate(int Fps);
 
 	/**
 	* Set the minimum bitrate for the peerconnection
@@ -158,11 +166,32 @@ public:
 	bool SetAudioCodec(EMillicastAudioCodecs InAudioCodec);
 
 	/**
+	 * Enable the Simulcast
+	 * Have to be called before Publish
+	*/
+	UFUNCTION(BlueprintCallable, Category = "MillicastPublisher", META = (DisplayName = "EnableSimulcast"))
+	void EnableSimulcast(bool InSimulcast = true);
+	
+	/**
+	 * Enable the Automute function
+	 * Have to be called before Publish
+	*/
+	UFUNCTION(BlueprintCallable, Category = "MillicastPublisher", META = (DisplayName = "EnableAutomute"))
+	void EnableAutomute(bool InAutomute = false);
+
+	/**
 	* Enable RTC stats gathering
 	* Enter the cmd: ``stat millicast_publisher`` in order to display them
 	*/
 	UFUNCTION(BlueprintCallable, Category = "MillicastPublisher", META = (DisplayName = "EnableStat"))
 	void EnableStats(bool Enable);
+
+	/**
+	 * Enable recording
+	 * Must be called before publishing to have effect
+	 */
+	UFUNCTION(BlueprintCallable, Category = "MillicastPublisher", META = (DisplayName = "EnableRecording"))
+	void EnableRecording(bool Enable);
 
 	/**
 	* Enable the frame transformer
@@ -268,6 +297,7 @@ private:
 	/** Publisher */
 	TAtomic<EMillicastPublisherState> State = EMillicastPublisherState::Disconnected;
 	bool RtcStatsEnabled = false;
+	TOptional<int> MaximumFramerate;
 	TOptional<int> MinimumBitrate; // in bps
 	TOptional<int> MaximumBitrate; // in bps
 	TOptional<int> StartingBitrate; // in bps
