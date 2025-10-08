@@ -93,7 +93,7 @@ namespace UnrealBuildTool.Rules
 				AddEngineThirdPartyPrivateStaticDependencies(Target, "NVAftermath");
 			}
 
-            if (Target.Platform.ToString() == "Win64" || bUseMillicastWebRTC)
+            if (Target.Platform.ToString() == "Win64")
             {
                 PublicDefinitions.Add("WITH_SCREENCAPTURER=1");
             }
