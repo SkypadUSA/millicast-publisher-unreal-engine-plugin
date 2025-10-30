@@ -9,8 +9,8 @@
 UENUM(BlueprintType)
 enum class EAudioCaptureDirection : uint8
 {
-	Input    UMETA(DisplayName = "Input"),
-	Ouptut   UMETA(DisplayName = "Output"),
+	Input   UMETA(DisplayName = "Input"),
+	Output  UMETA(DisplayName = "Output"),
 };
 
 USTRUCT(BlueprintType)
@@ -27,10 +27,19 @@ struct FAudioCaptureInfo
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "MillicastPublisher")
 	EAudioCaptureDirection Direction;
 
-	FAudioCaptureInfo() noexcept = default;
+	FAudioCaptureInfo() noexcept
+		: DeviceName(TEXT("")),
+		  DeviceId(TEXT("")),
+		  Direction(EAudioCaptureDirection::Input)
+	{
+	}
 
 	FAudioCaptureInfo(FString InDeviceName, FString InDeviceId, EAudioCaptureDirection InDirection) noexcept 
-		: DeviceName(MoveTemp(InDeviceName)), DeviceId(MoveTemp(InDeviceId)), Direction(MoveTemp(InDirection)) {}
+		: DeviceName(MoveTemp(InDeviceName)),
+		  DeviceId(MoveTemp(InDeviceId)),
+		  Direction(InDirection)
+	{
+	}
 };
 
 UCLASS()
