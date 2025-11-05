@@ -20,7 +20,7 @@ void UMillicastAudioDeviceCaptureSubsystem::Refresh()
 {
 	UE_LOG(LogMillicastPublisher, Log, TEXT("Fetch available audio devices"));
 
-	// input 
+	// Input devices
 	TArray<Audio::FCaptureDeviceInfo> RawDevices;
 	Audio::FAudioCapture AudioCapture;
 	AudioCapture.GetCaptureDevicesAvailable(RawDevices);
@@ -31,7 +31,7 @@ void UMillicastAudioDeviceCaptureSubsystem::Refresh()
 		Devices.Emplace(Device.DeviceName, Device.DeviceId, EAudioCaptureDirection::Input);
 	}
 
-	// output
+	// Output devices
 #if PLATFORM_WINDOWS
 	std::vector<Millicast::Publisher::DeviceDesc> RawOutputDevices;
 	Millicast::Publisher::WasapiDeviceCapturer WasapiCapturer(10, true);
@@ -40,9 +40,11 @@ void UMillicastAudioDeviceCaptureSubsystem::Refresh()
 
 	for (const auto& Device : RawOutputDevices)
 	{
-		Devices.Emplace(FString(Device.DeviceName.c_str()), 
+		Devices.Emplace(
+			FString(Device.DeviceName.c_str()),
 			FString(Device.DeviceID.c_str()),
-			EAudioCaptureDirection::Ouptut);
+			EAudioCaptureDirection::Output 
+		);
 	}
 #endif
 }
